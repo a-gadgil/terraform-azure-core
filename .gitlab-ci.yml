@@ -24,14 +24,17 @@ validate_code:
 
 plan_infrastructure:
   stage: plan
-  image:
-    name: mcr.microsoft.com/azure-cli:latest
-  script:
-    - apt-get update && apt-get install -y gnupg software-properties-common
+  image: ubuntu:22.04
+  before_script:
+    - apt-get update && apt-get install -y curl wget unzip gnupg software-properties-common lsb-release
+    # Install Azure CLI
+    - curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+    # Install Terraform
     - wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor > /usr/share/keyrings/hashicorp-archive-keyring.gpg
     - echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list
     - apt-get update && apt-get install -y terraform
     - cd ${TF_ROOT}
+  script:
     - az login --service-principal -u "$AZURE_CLIENT_ID" -p "$AZURE_CLIENT_SECRET" --tenant "$AZURE_TENANT_ID"
     - az account set --subscription "$AZURE_SUBSCRIPTION_ID"
     - terraform init
