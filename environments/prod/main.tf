@@ -1,9 +1,24 @@
-module "prod_storage" {
-  source = "../../modules/storage"
+terraform {
+  required_version = ">= 1.5.0"
 
-  environment              = "prod"
-  resource_group_name      = "rg-prod-storage-eastus"
-  account_tier             = "Standard"
-  account_replication_type = "GRS" # Geo-redundant for production resiliency
-  container_name           = "production-data"
+  backend "azurerm" {
+    resource_group_name  = "rg-tfstate-001"
+    storage_account_name = "tfstatedata001"
+    container_name       = "tfstate"
+    key                  = "prod.appservice.tfstate"
+  }
+}
+
+data "azurerm_resource_group" "prod" {
+  name = "rg-prod-001"
+}
+
+module "app_service" {
+  source              = "../../modules/app_service"
+  environment         = "prod"
+  location            = data.azurerm_resource_group.prod.location
+  resource_group_name = data.azurerm_resource_group.prod.name
+  app_name_prefix     = "core-api"
+  sku_tier            = "Standard"
+  sku_size            = "S1"
 }
