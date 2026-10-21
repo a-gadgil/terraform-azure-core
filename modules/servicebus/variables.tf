@@ -17,4 +17,3 @@ variable "queue_name" {
   description = "The name of the Azure Storage Queue."
   type        = string
 }
-

@@ -1,4 +1,9 @@
-output "prod_storage_account_name" {
-  value       = module.prod_storage.storage_account_name
-  description = "Production storage account name"
+output "app_service_default_hostname" {
+  value       = module.app_service.app_service_default_hostname
+  description = "Default hostname of the App Service"
+}
+
+output "app_service_id" {
+  value       = module.app_service.app_service_id
+  description = "ID of the Linux Web App"
 }
