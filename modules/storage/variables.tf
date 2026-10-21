@@ -30,5 +30,3 @@ variable "environment" {
   description = "The name of the blob container to create"
   type        = string
   }
-
-  
