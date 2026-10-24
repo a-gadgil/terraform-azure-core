@@ -34,3 +34,19 @@ output "dev_vm_private_ip" {
   value       = module.compute.vm_private_ip
   description = "Private IP of the development virtual machine"
 }
+
+
+# 3. Instantiating the Storage Module
+module "storage" {
+  source                   = "../../modules/azure_storage"
+  resource_group_name      = azurerm_resource_group.dev.name
+  location                 = azurerm_resource_group.dev.location
+  environment              = "dev"
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+output "dev_storage_account_name" {
+  value       = module.storage.storage_account_name
+  description = "Name of the dev storage account"
+}

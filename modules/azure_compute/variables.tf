@@ -18,4 +18,3 @@
       type        = string
       default     = "Standard_B1s"
     }
-    
