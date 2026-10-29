@@ -22,7 +22,7 @@ resource "azurerm_resource_group" "dev" {
 
 # 2. Calling our Composite Module
 module "compute" {
-  source              = "../../modules/azure_compute"  # <--- Notice the extra ../
+  source              = "../../modules/azure_compute" # <--- Notice the extra ../
   resource_group_name = azurerm_resource_group.dev.name
   location            = azurerm_resource_group.dev.location
   environment         = "dev"
